@@ -50,3 +50,40 @@ void displayAllCandidates()
     printf("\n");
 }
 
+void getVotes(int voterCount)
+{
+    displayAllCandidates();
+    printf("Voter %d, pick (1-%d): ", voterCount + 1, candidateCount);
+    int choice;
+    scanf("%d", &choice);
+
+    if (choice >= 1 && choice <= candidateCount) {
+        allCandidates[choice - 1].votes++;
+    } else {
+        printf("Invalid! vote again\n");
+        getVotes(voterCount);
+    }
+}
+
+int main()
+{
+    for (int i = 0; i < 11; i++) symbolTaken[i] = 0;
+
+    printf("Enter number of candidates: ");
+    scanf("%d", &candidateCount);
+    if (candidateCount >= MAX_C) {
+        printf("Too many candidates, bye\n");
+        return 0;
+    }
+
+    for (int i = 0; i < candidateCount; i++) fillCandidate(i);
+
+    int numVoters;
+    printf("Enter number of voters: ");
+    scanf("%d", &numVoters);
+
+    for (int i = 0; i < numVoters; i++) getVotes(i);
+
+    return 0;
+}
+
