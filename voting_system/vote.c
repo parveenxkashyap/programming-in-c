@@ -87,3 +87,55 @@ int main()
     return 0;
 }
 
+void getResults()
+{
+    int maxVotes = 0;
+    int winnerIndex = -1;
+    int winnerFrequency = 0;
+
+    for (int i = 0; i < candidateCount; i++) {
+        if (allCandidates[i].votes > maxVotes) {
+            maxVotes = allCandidates[i].votes;
+            winnerIndex = i;
+        }
+    }
+
+    for (int i = 0; i < candidateCount; i++) {
+        if (allCandidates[i].votes == maxVotes) winnerFrequency++;
+    }
+
+    printf("\nRESULTS\n");
+
+    if (winnerFrequency > 1) printf("No clear winner\n");
+    else if (winnerIndex != -1)
+        printf("Winner: %s (%c) with %d votes\n",
+               allCandidates[winnerIndex].name,
+               allCandidates[winnerIndex].symbol,
+               maxVotes);
+    else printf("No winner\n");
+}
+
+// call getResults at end of main
+int main()
+{
+    for (int i = 0; i < 11; i++) symbolTaken[i] = 0;
+
+    printf("Enter number of candidates: ");
+    scanf("%d", &candidateCount);
+    if (candidateCount >= MAX_C) {
+        printf("Too many candidates, bye\n");
+        return 0;
+    }
+
+    for (int i = 0; i < candidateCount; i++) fillCandidate(i);
+
+    int numVoters;
+    printf("Enter number of voters: ");
+    scanf("%d", &numVoters);
+
+    for (int i = 0; i < numVoters; i++) getVotes(i);
+
+    getResults();
+
+    return 0;
+}
